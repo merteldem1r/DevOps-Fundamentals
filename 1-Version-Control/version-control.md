@@ -234,6 +234,30 @@ git show HEAD:file.txt
 git show <commit-hash>
 ```
 
+### Check Out a Specific Commit by Hash
+
+```bash
+git checkout <commit-hash>
+# modern equivalent
+git switch --detach <commit-hash>
+```
+
+This moves you to that exact commit in detached HEAD state. Detached HEAD is useful for inspecting old code, running tests on a past snapshot, or debugging regressions without moving a branch pointer.
+
+If you want to keep new work from that point, create a branch immediately:
+
+```bash
+git switch -c fix/from-old-commit
+# older equivalent
+git checkout -b fix/from-old-commit
+```
+
+Return to your previous branch:
+
+```bash
+git switch -
+```
+
 ### See Who Changed a Line
 
 ```bash
@@ -277,6 +301,38 @@ git revert <commit-hash>
 ```
 
 `git revert` creates a new commit that undoes an earlier commit. It is the preferred way to undo changes on shared branches.
+
+### Roll Back 2-3 Commits After They Were Already Pushed
+
+If unwanted commits are already pushed, choose the rollback style based on your team policy.
+
+Option 1: Safe for shared branches (recommended)
+
+```bash
+# Revert the last 3 commits by creating new "undo" commits
+git revert --no-edit HEAD~3..HEAD
+git push origin main
+```
+
+Use this on protected or shared branches because it does not rewrite published history.
+
+Option 2: Rewrite history (use with coordination)
+
+```bash
+# Move local branch pointer back 3 commits
+git reset --hard HEAD~3
+
+# Push rewritten history safely
+git push --force-with-lease origin main
+```
+
+Use this only when your team allows history rewriting. Prefer `--force-with-lease` over `--force` because it prevents accidentally overwriting someone else's newer remote work.
+
+Tip: preview the target commit before rollback.
+
+```bash
+git log --oneline --graph -n 10
+```
 
 ## Stashing Changes
 
