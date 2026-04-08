@@ -2,15 +2,21 @@
 
 Practical learning repository for core DevOps topics with hands-on notes, examples, and CI pipeline practice.
 
-## Repository Structure
+**Search Resources**: [Build and Deploy a Production API](https://www.youtube.com/watch?v=H5FAxTBuNM8&list=WL&index=18&t=6724s) | [DevOps Tutorial GeekForGeeks](https://www.geeksforgeeks.org/devops/devops-tutorial/) | [GitHub Actions](https://docs.github.com/en/actions/tutorials)
+
+## Project Sections
 
 ### 1. Version Control
+
+![git](/images/version-control-branching.png)
 
 Focus: Git and GitHub fundamentals, workflows, rollback strategies, stash usage, and practical command usage.
 
 - Folder: [1-Version-Control](1-Version-Control)
 
 ### 2. CI/CD Pipelines
+
+![ci/cd](/images/ci-cd-wall.png)
 
 Focus: CI/CD foundations, GitHub Actions practice, YAML syntax, and a Go-based pipeline testing setup.
 
