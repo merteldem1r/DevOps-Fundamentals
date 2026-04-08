@@ -1,5 +1,7 @@
 # Version Control
 
+![version-control](/images/version-control-wall.jpg)
+
 Version control tracks changes to code and configuration over time. In DevOps, it enables collaboration, rollback, release traceability, and automation.
 
 - Git: distributed version control system.
@@ -64,7 +66,43 @@ git pull --rebase
 
 Use `pull --rebase` when you want a cleaner, linear local history.
 
+## Git Config
+
+Use `git config` to set identity, defaults, and a few safe productivity options.
+
+### Essential Commands
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main
+git config --global pull.rebase true
+git config --global core.editor "code --wait"
+git config --list
+```
+
+### Useful Patterns
+
+- Set `user.name` and `user.email` once per machine so commits are attributed correctly.
+- Set `init.defaultBranch` to `main` so new repos start consistently.
+- Set `pull.rebase=true` if you prefer cleaner history and understand rebasing.
+- Set `core.editor` to your editor so commit messages and interactive Git flows open correctly.
+- Use `git config --global -e` to review and edit your Git settings directly.
+
+### Handy Aliases
+
+```bash
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.cm commit
+```
+
+These aliases are optional, but they can make frequent commands faster if your team is comfortable with them.
+
 ## Branching and Checkout
+
+![branching](/images/version-control-branching.png)
 
 ### Create and Switch Branch
 
@@ -142,6 +180,8 @@ git reset --hard HEAD~1         # undo commit, discard changes
 ```
 
 ### Safe Undo for Shared Branches
+
+![verions-control-log](/images/version-control-log.png)
 
 ```bash
 git revert <commit-hash>
