@@ -37,13 +37,13 @@ jobs: # Define the jobs in the pipeline
       - name: download dependencies
         run: go mod download
 
-      - name: Verify moduele files # check if go.mod and go.sum are in sync and no unexpected changes
+      - name: Verify module files # check if go.mod and go.sum are in sync and no unexpected changes
         run: |
           go mod tidy 
           git diff --exit-code go.mod go.sum
 
       - name: Build application
-        run: go build ./..
+        run: go build ./...
 
       - name: Run tests
         run: go test -v ./...
