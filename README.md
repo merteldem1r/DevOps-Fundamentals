@@ -1,118 +1,43 @@
 # DevOps Fundamentals
 
-This repository is for practicing the foundations of DevOps in a practical and structured way.
+Practical learning repository for core DevOps topics with hands-on notes, examples, and CI pipeline practice.
 
-## What Is DevOps?
+## Repository Structure
 
-DevOps is a way of working where Development and Operations collaborate to deliver software faster, safer, and more reliably.
+### 1. Version Control
 
-It combines:
+Focus: Git and GitHub fundamentals, workflows, rollback strategies, stash usage, and practical command usage.
 
-- Culture: shared ownership, collaboration, and fast feedback
-- Practices: automation, continuous integration, continuous delivery, monitoring
-- Tools: platforms that support build, test, deploy, observe, and secure systems
+- Folder: [1-Version-Control](1-Version-Control)
 
-The main goal is to shorten the software delivery lifecycle while improving quality and stability.
+### 2. CI/CD Pipelines
 
-## Core DevOps Stages
+Focus: CI/CD foundations, GitHub Actions practice, YAML syntax, and a Go-based pipeline testing setup.
 
-DevOps is often represented as an iterative lifecycle:
+- Folder: [2-CI-CD-Pipelines](2-CI-CD-Pipelines)
 
-1. Plan
+Simple folder structure:
 
-- Define requirements, priorities, and architecture.
-- Output: user stories, tasks, design decisions.
+```text
+2-CI-CD-Pipelines/
+|-- go.mod                       # Go module definition
+|-- go.sum                       # Locked dependency checksums
+|-- directive/
+|   |-- ci-cd-pipelines.md       # CI/CD theory and workflow notes
+|   |-- yaml.md                  # YAML fundamentals
+|   |-- example.yaml             # YAML syntax and workflow 
+|-- src/
+|   |-- main.go                  # entry
+|   |-- internal/
+|   |   |-- tests/
+|   |       |-- uuid_test.go     # simple uuid test
+|   |-- utils/                   # utilities
+```
 
-2. Code
+### CI Workflow
 
-- Write application and infrastructure code.
-- Output: source code in version control (usually Git).
+This repository includes a GitHub Actions pipeline used to validate and test CI behavior.
 
-3. Build
+- Workflow file: [.github/workflows/pipeline.yaml](.github/workflows/pipeline.yaml)
 
-- Compile/package code and create artifacts (for example, Docker images).
-- Output: versioned build artifacts.
 
-4. Test
-
-- Run automated tests (unit, integration, end-to-end, security checks).
-- Output: quality and security feedback.
-
-5. Release
-
-- Approve and prepare deployment changes.
-- Output: release candidates, changelogs, release notes.
-
-6. Deploy
-
-- Move changes to environments (staging, production), often through CI/CD.
-- Output: running application updates.
-
-7. Operate
-
-- Keep services healthy, scalable, and cost-efficient.
-- Output: reliable runtime operations.
-
-8. Monitor
-
-- Track metrics, logs, and traces to detect issues and improve continuously.
-- Output: alerts, dashboards, and performance insights.
-
-## Common DevOps Technologies
-
-### Version Control
-
-- Git
-- GitHub, GitLab, Bitbucket
-
-### CI/CD
-
-- GitHub Actions
-- GitLab CI/CD
-- Jenkins
-- CircleCI
-- Argo CD (GitOps deployments)
-
-### Containers and Orchestration
-
-- Docker
-- Kubernetes
-- Helm
-
-### Infrastructure as Code (IaC)
-
-- Terraform
-- Ansible
-- Pulumi
-- CloudFormation
-
-### Cloud Platforms
-
-- AWS
-- Azure
-- Google Cloud
-
-### Monitoring and Observability
-
-- Prometheus + Grafana
-- ELK/EFK Stack (Elasticsearch, Logstash/Fluentd, Kibana)
-- Datadog
-- New Relic
-- OpenTelemetry
-
-### Security (DevSecOps)
-
-- Snyk
-- Trivy
-- SonarQube
-- OWASP ZAP
-- HashiCorp Vault
-
-## Key DevOps Principles
-
-- Automate repetitive work
-- Keep deployments small and frequent
-- Shift testing and security left
-- Use Infrastructure as Code
-- Monitor everything that matters
-- Learn from incidents and improve continuously
