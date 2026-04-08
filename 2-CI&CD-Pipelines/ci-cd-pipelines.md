@@ -155,55 +155,31 @@ Best practices:
 
 ## Deployment Patterns
 
-### Rolling Deployment
+Common rollout patterns:
 
-Update instances gradually. Good for standard services and low-risk incremental rollout.
+- Rolling deployment: update instances gradually.
+- Blue-green deployment: switch traffic between two environments after validation.
+- Canary deployment: expose a small slice of traffic first.
+- Feature flags: deploy code while controlling runtime behavior.
 
-### Blue-Green Deployment
-
-Maintain two environments and switch traffic after validation. Good for fast rollback and reduced downtime.
-
-### Canary Deployment
-
-Send a small portion of traffic to the new version first. Good for risk reduction and real-world validation.
-
-### Feature Flags
-
-Deploy code while keeping behavior hidden behind runtime toggles. Good for progressive release and separating deploy from release.
-
-These patterns are often combined in mature delivery systems.
+These patterns reduce release risk and are often combined.
 
 ## Real-World Use Cases
 
-### Web Application Team
+Typical use cases:
 
-A pull request runs lint, tests, and build validation. Merge to main publishes an artifact, deploys to staging, and promotes to production after approval.
-
-### API Platform Team
-
-Each merge builds and scans a container image, then publishes it to a registry. Deployment manifests are promoted through Git-based automation.
-
-### Infrastructure Team
-
-Terraform plan runs on every change. Apply happens only after review, policy checks, and controlled approval.
-
-### Regulated Team
-
-The pipeline includes audit logging, access control, retention, and explicit sign-off before production deployment.
+- Web apps: PR checks, artifact build, staging deploy, production approval.
+- APIs: container build, image scan, registry publish, manifest promotion.
+- Infrastructure: plan on every change, apply after review and policy checks.
+- Regulated systems: audit logging, retention, and explicit release approval.
 
 ## Example Pipeline Flow
 
 1. Trigger on pull request.
 2. Install dependencies.
-3. Run lint and format checks.
-4. Run unit tests.
-5. Build the artifact.
-6. Run security scans.
-7. Store reports and outputs.
-8. On merge to main, publish a release artifact.
-9. Deploy to staging.
-10. Run smoke tests.
-11. Promote to production after approval.
+3. Run lint, tests, and security scans.
+4. Build and store the artifact.
+5. Deploy to staging, run smoke tests, then promote after approval.
 
 This keeps validation early and release control explicit.
 
@@ -236,57 +212,36 @@ This is intentionally minimal. Real pipelines replace the echo steps with actual
 
 ## Best Practices
 
-- Keep pipelines fast enough for daily use.
-- Fail early on obvious problems.
-- Make stages deterministic and repeatable.
+- Keep pipelines fast and deterministic.
 - Promote the same artifact through environments.
+- Keep build, test, and deploy concerns separate.
 - Store pipeline definitions in version control.
-- Separate build, test, and deploy concerns.
-- Keep logs and reports visible.
-- Use small, frequent changes instead of large risky batches.
 - Protect production with checks, approvals, and observability.
 
 ## Common Anti-Patterns
 
 - Rebuilding different artifacts for each environment.
-- Running slow manual checks before every merge.
 - Storing secrets in plain text pipeline files.
 - Mixing deployment logic into application logic.
-- Letting pipelines get so slow that teams bypass them.
-- Relying on production-only validation.
-- Treating CI as a build step and ignoring test quality.
+- Letting pipelines become slow enough that teams bypass them.
 
 ## Testing Strategy
 
-CI exists largely to make testing automatic and trustworthy.
+CI exists to make testing automatic and trustworthy.
 
-- Unit tests should be fast and isolated.
-- Integration tests should validate service interaction.
-- End-to-end tests should cover critical user paths.
-- Smoke tests should confirm the app is healthy after deployment.
-- Flaky tests should be fixed or isolated quickly.
+- Unit tests: fast and isolated.
+- Integration tests: service interaction and contracts.
+- End-to-end tests: critical user paths.
+- Smoke tests: post-deploy health checks.
 
-The goal is not to run every test everywhere. The goal is to run the right test at the right stage.
+Run the right test at the right stage.
 
 ## Observability and Feedback
 
 CI/CD should provide useful feedback, not just pass or fail.
 
-Useful pipeline signals include:
-
-- Build duration.
-- Test duration.
-- Failure rate by stage.
-- Deployment frequency.
-- Change failure rate.
-- Mean time to recovery.
-
-After deployment, watch:
-
-- Error rate.
-- Latency.
-- Resource usage.
-- Business-critical metrics.
+- Pipeline metrics: build duration, failure rate, deployment frequency, MTTR.
+- Runtime metrics: error rate, latency, resource usage, business signals.
 
 Pipeline health and application health both matter.
 
@@ -294,53 +249,102 @@ Pipeline health and application health both matter.
 
 Every serious deployment strategy needs a rollback plan.
 
-Common approaches:
-
 - Redeploy the last known good artifact.
 - Revert the commit and rebuild.
 - Roll back the deployment manifest.
-- Switch traffic back in blue-green or canary setups.
+- Shift traffic back in blue-green or canary setups.
 
 Rollback is only reliable when artifacts are versioned and deployment history is clear.
 
 ## Governance and Approvals
 
-Some systems require human approval before release.
-
-This is useful when production has strict change control, compliance requirements, or tightly managed release windows.
-
-Approval should complement automation, not replace it.
+Some systems require human approval before release, especially when production has strict change control, compliance requirements, or limited release windows. Approval should complement automation, not replace it.
 
 ## Common Tools
 
-CI/CD is tool-agnostic, but these are widely used:
+CI/CD is tool-agnostic, but common choices include GitHub Actions, GitLab CI/CD, Jenkins, CircleCI, Azure DevOps Pipelines, Argo CD, Tekton, and Terraform Cloud or Enterprise. The discipline matters more than the tool: versioned pipelines, reproducible builds, tested promotion, and controlled releases.
 
-- GitHub Actions
-- GitLab CI/CD
-- Jenkins
-- CircleCI
-- Azure DevOps Pipelines
-- Argo CD
-- Tekton
-- Terraform Cloud or Enterprise
+## GitHub Actions Fundamentals
 
-The discipline matters more than the tool: versioned pipelines, reproducible builds, tested promotion, and controlled releases.
+GitHub Actions is GitHub's built-in automation platform. It runs workflows in response to repository events such as pushes, pull requests, tags, releases, or schedules.
 
-## Practical Checklist
+### Main Building Blocks
 
-Before introducing or reviewing a pipeline, confirm that:
+- Workflow: the full automation definition stored in `.github/workflows/*.yml`.
+- Event: what triggers the workflow, such as `push`, `pull_request`, or `workflow_dispatch`.
+- Job: a set of steps that runs on a runner.
+- Step: one action or command inside a job.
+- Runner: the machine that executes the job, such as `ubuntu-latest`.
+- Action: a reusable unit of automation, often published by GitHub or the community.
 
-- Source is in version control.
-- Build commands are documented.
-- Tests run in automation.
-- Secrets are managed securely.
-- Artifacts are versioned.
-- Environments are defined.
-- Rollback is possible.
-- Logs and reports are accessible.
+### What You Should Learn First
 
-## Summary
+Start with `push` and `pull_request`, then learn how to run shell commands, check out the repository, set up the runtime, read logs, and add secrets or artifacts later.
 
-CI/CD is the operating system of modern software delivery. CI gives fast validation, CD gives controlled promotion, and deployment automation turns code changes into reliable releases.
+### Core Features To Know
 
-The best pipelines are not the most complicated ones. They are the ones that are fast, repeatable, secure, observable, and aligned with how the team actually ships software.
+- `workflow_dispatch` for manual runs.
+- `jobs.<job_id>.runs-on` to choose the runner.
+- `needs` to control job order.
+- `secrets` and `permissions` to control access.
+- `strategy.matrix` to test multiple versions or platforms.
+- `actions/upload-artifact` and `actions/download-artifact` for build outputs.
+
+## Real Practice 
+
+### Good First Practice Workflow
+
+Create a workflow that does simple quality checks on every pull request and push to `main`:
+
+- Confirm Markdown files exist.
+- Check that the version-control and CI/CD guides are present.
+- Optionally count lines or search for required headings.
+- Fail the workflow if expected files or sections are missing.
+
+This gives you a real CI pipeline without needing an application runtime.
+
+### Suggested Learning Path
+
+1. Create a workflow file at `.github/workflows/ci.yml`.
+2. Trigger it on `push` and `pull_request`.
+3. Add a job on `ubuntu-latest` that checks out the repo and validates the markdown files.
+4. Push the workflow, watch the Actions tab, and fix failures from the logs.
+
+### Example Validation Workflow
+
+```yaml
+name: docs-ci
+
+on:
+	push:
+		branches: [main]
+	pull_request:
+
+jobs:
+	validate:
+		runs-on: ubuntu-latest
+		steps:
+			- name: Checkout repository
+				uses: actions/checkout@v4
+
+			- name: Check required files
+				run: |
+					test -f README.md
+					test -f 1-Version-Control/version-control.md
+					test -f 2-CI&CD-Pipelines/ci-cd-pipelines.md
+
+			- name: Verify markdown content exists
+				run: |
+					grep -q "# Version Control" 1-Version-Control/version-control.md
+					grep -q "# CI/CD Pipelines" 2-CI&CD-Pipelines/ci-cd-pipelines.md
+
+			- name: Show line counts
+				run: |
+					wc -l README.md 1-Version-Control/version-control.md 2-CI&CD-Pipelines/ci-cd-pipelines.md
+```
+
+This is a strong first workflow because it teaches event triggers, runners, shell steps, and failure handling without introducing unnecessary complexity.
+
+### How To Think About It
+
+Treat GitHub Actions as code that enforces delivery standards. A good workflow is not just a script that runs commands. It is a policy implementation for how changes enter the repository and move toward release.

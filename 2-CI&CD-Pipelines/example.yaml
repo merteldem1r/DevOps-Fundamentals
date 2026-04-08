@@ -1,0 +1,247 @@
+# example.yaml (built with AI assistance, not from a real CI/CD system)
+
+# -----------------------------------------------------------------------------
+# 1) BASIC SCALARS
+# -----------------------------------------------------------------------------
+meta:
+  project_name: "devops-fundamentals"     # String (quoted)
+  owner: platform-team                     # String (unquoted)
+  version: 1                               # Integer
+  confidence_threshold: 0.95               # Float
+  ci_enabled: true                         # Boolean
+  notes: null                              # Null value
+
+# -----------------------------------------------------------------------------
+# 2) MAPS (OBJECTS) AND NESTING
+# -----------------------------------------------------------------------------
+application:
+  name: docs-service
+  runtime:
+    language: nodejs
+    version: "20"
+  ports:
+    http: 8080
+    metrics: 9090
+
+# -----------------------------------------------------------------------------
+# 3) LISTS (SEQUENCES)
+# -----------------------------------------------------------------------------
+environments:
+  - name: dev
+    auto_deploy: true
+  - name: staging
+    auto_deploy: false
+  - name: production
+    auto_deploy: false
+
+# Short list syntax is possible, but block style is usually clearer for review.
+labels: [ci, cd, docs, training]
+
+# -----------------------------------------------------------------------------
+# 4) MULTI-LINE STRINGS
+# -----------------------------------------------------------------------------
+messages:
+  # '|' keeps line breaks exactly.
+  startup_banner: |
+    Build started
+    Running tests
+    Waiting for approvals
+
+  # '>' folds new lines into spaces.
+  summary: >
+    This is a folded multi-line message.
+    It will be interpreted as one logical line.
+
+# -----------------------------------------------------------------------------
+# 5) QUOTING RULES (IMPORTANT IN REAL CONFIG)
+# -----------------------------------------------------------------------------
+quoting_examples:
+  # Values like yes/no/on/off/true/false can be interpreted by parsers.
+  # Quote when you need exact string meaning.
+  strict_string_true: "true"
+  strict_string_no: "no"
+
+  # Special characters should be quoted for clarity.
+  url: "https://example.com/api?x=1&y=2"
+  colon_text: "key:value"
+
+# -----------------------------------------------------------------------------
+# 6) ANCHORS, ALIASES, AND MERGE KEYS (REUSE)
+# -----------------------------------------------------------------------------
+# Define reusable defaults once.
+defaults: &defaults
+  retry: 2
+  timeout_seconds: 600
+  shell: bash
+
+# Define reusable cache settings.
+cache_defaults: &cache_defaults
+  enabled: true
+  paths:
+    - ~/.cache/pip
+    - ~/.npm
+
+# Merge defaults into specific jobs using '<<'.
+job_templates:
+  build_template:
+    <<: *defaults
+    stage: build
+
+  test_template:
+    <<: *defaults
+    stage: test
+    timeout_seconds: 900   # Override default for longer test execution
+
+# -----------------------------------------------------------------------------
+# 7) CI/CD WORKFLOW-LIKE CONFIG (TO SHOW REAL DEVOPS STRUCTURE)
+# -----------------------------------------------------------------------------
+pipeline:
+  name: docs-ci-cd
+
+  # Triggers: when pipeline should run.
+  triggers:
+    push:
+      branches:
+        - main
+        - "feature/*"
+    pull_request:
+      branches:
+        - main
+    schedule:
+      - cron: "0 2 * * 1"   # Every Monday 02:00 UTC
+
+  # Global variables available to jobs.
+  variables:
+    DEFAULT_ENV: dev
+    PYTHON_VERSION: "3.11"
+    NODE_VERSION: "20"
+    ARTIFACT_RETENTION_DAYS: 14
+
+  # Stages define high-level flow order.
+  stages:
+    - validate
+    - test
+    - build
+    - security
+    - package
+    - deploy
+
+  jobs:
+    validate_yaml:
+      <<: *defaults
+      stage: validate
+      image: "python:3.11"
+      cache: *cache_defaults
+      rules:
+        - if: "branch == 'main'"
+        - if: "event == 'pull_request'"
+      steps:
+        - name: checkout
+          run: "git clone <repo-url> ."
+        - name: lint-yaml
+          run: "yamllint ."
+        - name: validate-headings
+          run: "grep -q '# CI/CD Pipelines' 2-CI&CD-Pipelines/ci-cd-pipelines.md"
+
+    unit_tests:
+      <<: *defaults
+      stage: test
+      needs:
+        - validate_yaml
+      image: "node:20"
+      steps:
+        - name: install
+          run: "npm ci"
+        - name: test
+          run: "npm test"
+      artifacts:
+        reports:
+          junit: "reports/junit.xml"
+        paths:
+          - coverage/
+        retention_days: 7
+
+    build_docs:
+      <<: *defaults
+      stage: build
+      needs:
+        - unit_tests
+      image: "node:20"
+      steps:
+        - name: build
+          run: "npm run build:docs"
+      artifacts:
+        paths:
+          - dist/
+        retention_days: 14
+
+    security_scan:
+      <<: *defaults
+      stage: security
+      needs:
+        - build_docs
+      image: "aquasec/trivy:latest"
+      steps:
+        - name: scan-filesystem
+          run: "trivy fs --exit-code 1 --severity HIGH,CRITICAL ."
+
+    package_release:
+      <<: *defaults
+      stage: package
+      needs:
+        - security_scan
+      image: "alpine:3.20"
+      rules:
+        - if: "branch == 'main'"
+      steps:
+        - name: create-archive
+          run: "tar -czf docs-site.tar.gz dist/"
+      artifacts:
+        paths:
+          - docs-site.tar.gz
+        retention_days: 30
+
+    deploy_staging:
+      <<: *defaults
+      stage: deploy
+      needs:
+        - package_release
+      environment: staging
+      rules:
+        - if: "branch == 'main'"
+      steps:
+        - name: deploy
+          run: "./scripts/deploy.sh staging docs-site.tar.gz"
+        - name: smoke-test
+          run: "./scripts/smoke-test.sh https://staging.example.com"
+
+    deploy_production:
+      <<: *defaults
+      stage: deploy
+      needs:
+        - deploy_staging
+      environment: production
+      approval:
+        required: true
+        approvers:
+          - sre-lead
+          - release-manager
+      rules:
+        - if: "tag =~ '^v[0-9]+\\.[0-9]+\\.[0-9]+$'"
+      steps:
+        - name: deploy
+          run: "./scripts/deploy.sh production docs-site.tar.gz"
+        - name: post-deploy-check
+          run: "./scripts/smoke-test.sh https://example.com"
+
+# -----------------------------------------------------------------------------
+# 8) YAML STYLE REMINDERS
+# -----------------------------------------------------------------------------
+style_guide:
+  indent_with_spaces: true   # Always use spaces, never tabs
+  recommended_indent_size: 2
+  key_naming_style: snake_case
+  keep_comments_concise: true
+  quote_ambiguous_values: true
+
+# End of example.yaml
