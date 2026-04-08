@@ -275,15 +275,3 @@ git reset --hard HEAD~1
 git push --force-with-lease
 git tag -a v1.0.0 -m "Release"
 ```
-
-## Common Mistakes to Avoid
-
-- Large, mixed-purpose commits.
-- Direct pushes to protected branches.
-- Unsafe force-pushes without coordination.
-- Ignoring conflicts for too long.
-- Committing secrets or generated artifacts.
-
-## Summary
-
-Professional Git usage is about controlled change: small commits, branch-based collaboration, safe rollback, and clear history. Master these commands and workflows, and you will have a strong DevOps foundation.
