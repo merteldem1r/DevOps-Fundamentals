@@ -1,0 +1,49 @@
+name: CI-Pipeline
+
+on:
+  push:
+    branches: [main] # Trigger on pushes to main branch
+    paths: # folder triggers
+      - "2-CI-CD-Pipelines/**"
+      - ".github/workflows/pipeline.yaml" # pipeline configuration itself changes
+  pull_request:
+    branches: [main]
+    paths:
+      - "2-CI-CD-Pipelines/**"
+      - ".github/workflows/pipeline.yaml"
+  workflow_dispatch: # for manual trigger on GitHub UI
+
+jobs: # Define the jobs in the pipeline
+  go-cli:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 2-CI-CD-Pipelines
+
+    steps:
+      - name: Checkout code # checkout the repository code to the runner
+        uses: actions/checkout@v5
+
+      - name: Set up Golang
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25.x"
+          cache: true # enable caching of Go modules between runs
+          cache-dependency-path: "2-CI-CD-Pipelines/go.sum" # specify the file to determine cache key
+
+      - name: Print Go version
+        run: go version
+
+      - name: download dependencies
+        run: go mod download
+
+      - name: Verify moduele files # check if go.mod and go.sum are in sync and no unexpected changes
+        run: |
+          go mod tidy 
+          git diff --exit-code go.mod go.sum
+
+      - name: Build application
+        run: go build ./..
+
+      - name: Run tests
+        run: go test -v ./...
