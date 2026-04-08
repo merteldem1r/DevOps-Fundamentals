@@ -7,10 +7,6 @@ import (
 	"github.com/google/uuid"
 )
 
-func ExampleMessage() {
-	fmt.Println("Testing package")
-}
-
 func TestExample(t *testing.T) {
 	id := uuid.New()
 	fmt.Println("Generated UUID:", id)
