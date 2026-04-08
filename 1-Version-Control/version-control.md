@@ -314,39 +314,6 @@ incoming changes
 >>>>>>> feature-branch
 ```
 
-## GitHub Workflow
-
-GitHub is where Git becomes a team workflow.
-
-### Typical Pull Request Flow
-
-1. Create a feature branch.
-2. Push the branch to GitHub.
-3. Open a pull request.
-4. Link issues or tickets if relevant.
-5. Request review from teammates.
-6. Respond to comments and push updates.
-7. Merge when checks and approvals are complete.
-
-### Why Pull Requests Matter
-
-Pull requests help teams:
-
-- Review code before merging.
-- Discuss tradeoffs in context.
-- Run automated checks before release.
-- Keep a record of why changes were accepted.
-
-### Common GitHub Features
-
-- Pull requests and code review.
-- Issues and project tracking.
-- GitHub Actions for CI/CD.
-- Branch protection rules.
-- Release tags and release notes.
-- CODEOWNERS for review routing.
-- Security alerts and dependency scanning.
-
 ## Branching Strategies
 
 ### Feature Branch Workflow
