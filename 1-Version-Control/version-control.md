@@ -172,13 +172,19 @@ git branch feature/login-flow
 
 ```bash
 git switch feature/login-flow
+git checkout feature/login-flow
 ```
+
+Use `git switch` for branch movement in modern Git. `git checkout` is the older, more overloaded command that can also switch branches, restore files, and check out commits. In practice, `git switch` is clearer for branch changes, while `git checkout` still appears in older tutorials and in repositories that have not moved to the newer workflow.
 
 ### Create and Switch in One Step
 
 ```bash
 git switch -c feature/login-flow
+git checkout -b feature/login-flow
 ```
+
+Use `git switch -c` as the modern equivalent of `git checkout -b`.
 
 ### List Branches
 
@@ -271,6 +277,55 @@ git revert <commit-hash>
 ```
 
 `git revert` creates a new commit that undoes an earlier commit. It is the preferred way to undo changes on shared branches.
+
+## Stashing Changes
+
+`git stash` temporarily saves your uncommitted changes and restores a clean working tree. It is useful when you need to switch branches, pull updates, or handle an urgent fix without losing work that is not ready to commit.
+
+Common use cases:
+
+- You started a feature but need to switch to another branch quickly.
+- You want to pull the latest changes before your work is ready.
+- You need a clean tree for testing, debugging, or emergency fixes.
+
+### Save Current Work
+
+```bash
+git stash
+git stash push -m "WIP on version-control notes"
+```
+
+### View Stashes
+
+```bash
+git stash list
+```
+
+### Reapply Stashed Changes
+
+```bash
+git stash apply
+git stash apply stash@{0}
+```
+
+`git stash apply` restores the changes but keeps the stash entry.
+
+### Reapply and Remove the Stash
+
+```bash
+git stash pop
+```
+
+Use `pop` when you want to restore the changes and delete the stash entry in one step.
+
+### Remove a Stash Manually
+
+```bash
+git stash drop stash@{0}
+git stash clear
+```
+
+`drop` removes one stash entry. `clear` removes all stashes.
 
 ## Merging and Rebasing
 
