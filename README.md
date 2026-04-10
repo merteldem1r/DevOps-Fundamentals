@@ -2,7 +2,7 @@
 
 Practical learning repository for core DevOps topics with hands-on notes, examples, and CI pipeline practice.
 
-**Search Resources**: [Build and Deploy a Production API](https://www.youtube.com/watch?v=H5FAxTBuNM8&list=WL&index=18&t=6724s) | [DevOps Tutorial - GeekForGeeks](https://www.geeksforgeeks.org/devops/devops-tutorial/) | [GitHub Actions](https://docs.github.com/en/actions/tutorials) | [Containerization using Docker - GeekForGeeks](https://www.geeksforgeeks.org/blogs/containerization-using-docker/)
+**Search Resources**: [Build and Deploy a Production API](https://www.youtube.com/watch?v=H5FAxTBuNM8&list=WL&index=18&t=6724s) | [DevOps Tutorial - GeekForGeeks](https://www.geeksforgeeks.org/devops/devops-tutorial/) | [GitHub Actions](https://docs.github.com/en/actions/tutorials) | [Containerization using Docker - GeekForGeeks](https://www.geeksforgeeks.org/blogs/containerization-using-docker/) | [Docker - Golang Tutorial](https://docs.docker.com/guides/golang/)
 
 ## Project Sections
 
