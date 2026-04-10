@@ -4,12 +4,12 @@
 # 1) BASIC SCALARS
 # -----------------------------------------------------------------------------
 meta:
-  project_name: "devops-fundamentals"     # String (quoted)
-  owner: platform-team                     # String (unquoted)
-  version: 1                               # Integer
-  confidence_threshold: 0.95               # Float
-  ci_enabled: true                         # Boolean
-  notes: null                              # Null value
+  project_name: "devops-fundamentals" # String (quoted)
+  owner: platform-team # String (unquoted)
+  version: 1 # Integer
+  confidence_threshold: 0.95 # Float
+  ci_enabled: true # Boolean
+  notes: null # Null value
 
 # -----------------------------------------------------------------------------
 # 2) MAPS (OBJECTS) AND NESTING
@@ -90,7 +90,7 @@ job_templates:
   test_template:
     <<: *defaults
     stage: test
-    timeout_seconds: 900   # Override default for longer test execution
+    timeout_seconds: 900 # Override default for longer test execution
 
 # -----------------------------------------------------------------------------
 # 7) CI/CD WORKFLOW-LIKE CONFIG (TO SHOW REAL DEVOPS STRUCTURE)
@@ -108,7 +108,7 @@ pipeline:
       branches:
         - main
     schedule:
-      - cron: "0 2 * * 1"   # Every Monday 02:00 UTC
+      - cron: "0 2 * * 1" # Every Monday 02:00 UTC
 
   # Global variables available to jobs.
   variables:
@@ -238,7 +238,7 @@ pipeline:
 # 8) YAML STYLE REMINDERS
 # -----------------------------------------------------------------------------
 style_guide:
-  indent_with_spaces: true   # Always use spaces, never tabs
+  indent_with_spaces: true # Always use spaces, never tabs
   recommended_indent_size: 2
   key_naming_style: snake_case
   keep_comments_concise: true
