@@ -10,9 +10,11 @@ func NewRouter() *chi.Mux {
 
 	globalHandler := handlers.NewGlobalHandler()
 
-	r.Route("/api/v1", func(r chi.Router) {
-		r.Get("", globalHandler.Get)
-		r.Get("/health", globalHandler.GetHealth)
+	r.Group(func(r chi.Router) {
+		r.Route("/api/v1", func(r chi.Router) {
+			r.Get("", globalHandler.Get)
+			r.Get("/health", globalHandler.GetHealth)
+		})
 	})
 
 	return r
