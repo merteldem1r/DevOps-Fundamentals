@@ -2,23 +2,31 @@ package handlers
 
 import "net/http"
 
-type GlobalHandler struct{}
-
-type HealthResponse struct {
-	status string
-	msg    string
+type GlobalHandler struct {
+	message string
 }
 
-func NewGlobalHandler() *GlobalHandler {
-	return &GlobalHandler{}
+type HandlerResponse struct {
+	Status string `json:"status"`
+	Msg    string `json:"msg"`
+}
+
+func NewGlobalHandler(msg string) *GlobalHandler {
+	return &GlobalHandler{message: msg}
 }
 
 func (h *GlobalHandler) Get(w http.ResponseWriter, r *http.Request) {
-	msg := "<3"
-	SuccessJSON(w, r, msg)
+	res := HandlerResponse{
+		Status: "Success",
+		Msg:    h.message,
+	}
+	SuccessJSON(w, r, res)
 }
 
 func (h *GlobalHandler) GetHealth(w http.ResponseWriter, r *http.Request) {
-	health := HealthResponse{status: "Success", msg: "OK"}
-	SuccessJSON(w, r, health)
+	res := HandlerResponse{
+		Status: "Success",
+		Msg:    "OK",
+	}
+	SuccessJSON(w, r, res)
 }

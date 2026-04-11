@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"time"
@@ -10,28 +10,22 @@ import (
 func RequestLogger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-
 		ip := getClientIP(r)
 
-		fmt.Printf(
-			"[REQUEST] %s | %s | %s | IP: %s | UA: %s\n",
-			r.Method,
-			r.URL.Path,
-			start.Format(time.RFC3339),
-			ip,
-			r.UserAgent(),
+		slog.Info("request started",
+			"method", r.Method,
+			"path", r.URL.Path,
+			"ip", ip,
+			"user_agent", r.UserAgent(),
 		)
 
-		// next handler
 		next.ServeHTTP(w, r)
 
-		fmt.Printf(
-			"[DONE] %s | %s | Duration: %v\n",
-			r.Method,
-			r.URL.Path,
-			time.Since(start),
+		slog.Info("request finished",
+			"method", r.Method,
+			"path", r.URL.Path,
+			"duration", time.Since(start),
 		)
-
 	})
 }
 

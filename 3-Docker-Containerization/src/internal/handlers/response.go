@@ -8,9 +8,9 @@ import (
 
 func SuccessJSON(w http.ResponseWriter, r *http.Request, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(payload)
+	w.WriteHeader(http.StatusOK)
 
-	if err == nil {
+	if err := json.NewEncoder(w).Encode(payload); err != nil {
 		slog.Error("Failed to encode JSON response", "error", err)
 	}
 }
