@@ -23,6 +23,8 @@ func NewRouter(cfg *config.Config, pg *pgxpool.Pool, logger *slog.Logger) *chi.M
 		r.Route("/api/v1", func(r chi.Router) {
 			r.Get("/", globalHandler.Get)
 			r.Get("/health", globalHandler.GetHealth)
+			r.Get("/todos", globalHandler.GetTodos)
+			r.Post("/todos", globalHandler.CreateTodo)
 		})
 	})
 

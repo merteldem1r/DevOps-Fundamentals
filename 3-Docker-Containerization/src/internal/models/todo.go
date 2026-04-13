@@ -3,15 +3,21 @@ package models
 import "github.com/google/uuid"
 
 type Todo struct {
-	Id          uuid.UUID
-	Title       string
-	Description string
-	Priority    string
+	ID          uuid.UUID `json:"id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description,omitempty"`
+	Priority    string    `json:"priority"`
+}
+
+type CreateTodoRequest struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Priority    string `json:"priority"`
 }
 
 type TodoResponse struct {
-	Id          uuid.UUID `json:"id"`
-	Title       string    `json:"msg"`
+	ID          uuid.UUID `json:"id"`
+	Title       string    `json:"title"`
 	Description string    `json:"description,omitempty"`
 	Priority    string    `json:"priority"`
 }
