@@ -34,16 +34,16 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-	// connect PG
-	pg, err := database.NewPostgres(ctx, cfg.POSTGRES_DSN, logger)
+	// db connection
+	pg, err := database.NewPostgres(ctx, cfg, logger)
 
 	if err != nil {
 		slog.Error("Error while connecting database", "error", err)
 		os.Exit(1)
 	}
 
-	// Run database migrations
-	if err := database.RunMigrations(cfg.POSTGRES_DSN, logger); err != nil {
+	// dg migrations
+	if err := database.RunMigrations(cfg, logger); err != nil {
 		slog.Error("Error while running migrations", "error", err)
 		os.Exit(1)
 	}

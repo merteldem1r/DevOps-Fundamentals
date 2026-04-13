@@ -7,9 +7,17 @@ import (
 )
 
 type Config struct {
-	MESSAGE      string `env:"EXAMPLE_MSG" env-required:"true"`
-	PORT         string `env:"PORT" env-default:"8080"`
-	POSTGRES_DSN string `env:"POSTGRES_DSN" env-required:"true"`
+	MESSAGE string `env:"EXAMPLE_MSG" env-required:"true"`
+	PORT    string `env:"PORT" env-default:"8080"`
+	PG      PostgresConfig
+}
+
+type PostgresConfig struct {
+	POSTGRES_USER     string `env:"POSTGRES_USER" env-required:"true"`
+	POSTGRES_PASSWORD string `env:"POSTGRES_PASSWORD" env-required:"true"`
+	POSTGRES_DB       string `env:"POSTGRES_DB" env-required:"true"`
+	POSTGRES_HOST     string `env:"POSTGRES_HOST" env-required:"true"`
+	POSTGRES_PORT     string `env:"POSTGRES_PORT" env-default:"5432"`
 }
 
 func LoadConfig() (*Config, error) {

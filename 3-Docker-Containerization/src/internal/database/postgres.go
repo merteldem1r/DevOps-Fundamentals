@@ -6,15 +6,14 @@ import (
 	"log/slog"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
+	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/utils"
 )
 
-func NewPostgres(ctx context.Context, dsn string, logger *slog.Logger) (*pgxpool.Pool, error) {
-	config, err := pgxpool.ParseConfig(dsn)
-	if err != nil {
-		return nil, fmt.Errorf("postgres: parse config: %w", err)
-	}
+func NewPostgres(ctx context.Context, cfg *config.Config, logger *slog.Logger) (*pgxpool.Pool, error) {
+	dsn := utils.BuildPostgresDSN(cfg)
 
-	pool, err := pgxpool.NewWithConfig(ctx, config)
+	pool, err := pgxpool.New(ctx, dsn)
 	if err != nil {
 		return nil, fmt.Errorf("postgres: connect: %w", err)
 	}
@@ -24,6 +23,6 @@ func NewPostgres(ctx context.Context, dsn string, logger *slog.Logger) (*pgxpool
 		return nil, fmt.Errorf("postgres: ping: %w", err)
 	}
 
-	logger.Info("Connected to PostgreSQL")
+	logger.Info("connected to PostgreSQL")
 	return pool, nil
 }
