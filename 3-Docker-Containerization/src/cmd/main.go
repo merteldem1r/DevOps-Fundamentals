@@ -36,7 +36,6 @@ func main() {
 
 	// db connection
 	pg, err := database.NewPostgres(ctx, cfg, logger)
-
 	if err != nil {
 		slog.Error("Error while connecting database", "error", err)
 		os.Exit(1)
@@ -50,7 +49,7 @@ func main() {
 
 	r := routes.NewRouter(cfg, pg, logger)
 
-	addr := ":" + cfg.PORT
+	addr := ":" + cfg.Port
 
 	slog.Info("HTTP server is starting",
 		"address", addr,

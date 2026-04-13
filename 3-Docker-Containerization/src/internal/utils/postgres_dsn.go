@@ -9,10 +9,10 @@ import (
 func BuildPostgresDSN(cfg *config.Config) string {
 	return fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		cfg.PG.POSTGRES_USER,
-		cfg.PG.POSTGRES_PASSWORD,
-		cfg.PG.POSTGRES_HOST,
-		cfg.PG.POSTGRES_PORT,
-		cfg.PG.POSTGRES_DB,
+		cfg.PG.User,
+		cfg.PG.Password,
+		cfg.PG.Host,
+		cfg.PG.Port,
+		cfg.PG.DB,
 	)
 }
