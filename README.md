@@ -57,8 +57,60 @@ This repository includes a GitHub Actions pipeline used to validate and test CI 
 
 ![docker](/images/docker-architecture.webp)
 
-Docker is a containerization platform that packages applications and their dependencies into lightweight, portable, reproducible units called containers. In DevOps, Docker is foundational because it solves the "it works on my machine" problem and powers modern deployment workflows.
+Docker is a containerization platform that packages applications and their dependencies into lightweight, portable, reproducible units called containers. In DevOps, Docker is foundational because it solves the "it works on my machine" problem and supports consistent local development, testing, and deployment.
 
-Focus: Docker fundamentals, containerization, Dockerfile syntax, image optimization, and Docker Compose for multi-container setups.
+Focus: Docker fundamentals, image building, multi-stage Dockerfiles, container networking, Docker Compose, environment variables, PostgreSQL integration, and migration-based database setup.
 
-- Folder: [3-Docker-Container](3-Docker-Containerization)
+- Folder: [3-Docker-Containerization](3-Docker-Containerization)
+
+#### What is covered in this section?
+
+This section contains a small Go-based Todo API that is containerized with Docker and orchestrated with Docker Compose.
+
+Main concepts practiced in this project:
+
+- Writing a multi-stage Dockerfile for a Go application
+- Building a small and production-like final image using a distroless runtime
+- Running multiple services with Docker Compose
+- Connecting an API container to a PostgreSQL container
+- Managing environment variables with `.env`
+- Applying SQL migrations automatically on application startup
+- Persisting PostgreSQL data with Docker volumes
+- Using retry logic for database startup readiness
+- Structuring a small backend project with config, handlers, routes, middleware, models, and database packages
+
+#### Project structure
+
+```text
+3-Docker-Containerization/
+|-- directive/
+|   |-- docker.md                    # notes
+|-- src/
+|   |-- cmd/
+|   |   |-- main.go                  # application entry point
+|   |-- internal/
+|       |-- config/
+|       |   |-- config.go            # env/config loading
+|       |-- database/
+|       |   |-- migrate.go           # migration runner
+|       |   |-- postgres.go          # PostgreSQL connection + retry logic
+|       |
+|       |-- handlers/
+|       |   |-- handler.go           # HTTP handlers
+|       |   |-- response.go          # JSON response helpers
+|       |   |-- handler_test.go      # handler tests
+|       |-- middlewares/
+|       |-- models/
+|       |   |-- todo.go              # todo request/response models
+|       |-- routes/
+|       |   |-- router.go            # route registration
+|       |-- utils/                   # utils (dsn parser)
+|-- migrations/                      # embeds migration files into binary
+|-- .env.example                     # example environment template
+|-- docker-compose.yaml              # multi-container local setup
+|-- Dockerfile                       # multi-stage image build
+|-- go.mod
+|-- go.sum
+```
+
+![docker-compse-build](/images/docker-compose-build.png)
