@@ -8,7 +8,7 @@ import (
 )
 
 func TestGlobalHandler_GetHealth(t *testing.T) {
-	h := NewGlobalHandler("<3")
+	h := NewGlobalHandler("<3", nil, nil)
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/health", nil)
 	rr := httptest.NewRecorder()
@@ -32,13 +32,13 @@ func TestGlobalHandler_GetHealth(t *testing.T) {
 		t.Fatalf("got status %q, want %q", res.Status, "Success")
 	}
 
-	if res.Msg != "OK" {
-		t.Fatalf("got msg %q, want %q", res.Msg, "OK")
+	if res.Data != "OK" {
+		t.Fatalf("got Data %q, want %q", res.Data, "OK")
 	}
 }
 
 func TestGlobalHandler_Get(t *testing.T) {
-	h := NewGlobalHandler("<3")
+	h := NewGlobalHandler("<3", nil, nil)
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/", nil)
 	rr := httptest.NewRecorder()
@@ -58,7 +58,7 @@ func TestGlobalHandler_Get(t *testing.T) {
 		t.Fatalf("got status %q, want %q", res.Status, "Success")
 	}
 
-	if res.Msg != "<3" {
-		t.Fatalf("got msg %q, want %q", res.Msg, "<3")
+	if res.Data != "<3" {
+		t.Fatalf("got Data %q, want %q", res.Data, "<3")
 	}
 }

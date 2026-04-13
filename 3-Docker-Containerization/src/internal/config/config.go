@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	MESSAGE string `env:"EXAMPLE_MSG" env-required:"true"`
-	PORT    string `env:"PORT" env-default:"8080"`
+	MESSAGE      string `env:"EXAMPLE_MSG" env-required:"true"`
+	PORT         string `env:"PORT" env-default:"8080"`
+	POSTGRES_DSN string `env:"POSTGRES_DSN" env-required:"true"`
 }
 
 func LoadConfig() (*Config, error) {

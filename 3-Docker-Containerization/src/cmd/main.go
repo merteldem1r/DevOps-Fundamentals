@@ -1,12 +1,16 @@
 package main
 
 import (
+	"context"
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/lmittmann/tint"
+
 	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
+	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/database"
 	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/routes"
 )
 
@@ -26,7 +30,25 @@ func main() {
 		os.Exit(1)
 	}
 
-	r := routes.NewRouter(cfg)
+	// Context for initialization
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	// connect PG
+	pg, err := database.NewPostgres(ctx, cfg.POSTGRES_DSN, logger)
+
+	if err != nil {
+		slog.Error("Error while connecting database", "error", err)
+		os.Exit(1)
+	}
+
+	// Run database migrations
+	if err := database.RunMigrations(cfg.POSTGRES_DSN, logger); err != nil {
+		slog.Error("Error while running migrations", "error", err)
+		os.Exit(1)
+	}
+
+	r := routes.NewRouter(cfg, pg, logger)
 
 	addr := ":" + cfg.PORT
 
