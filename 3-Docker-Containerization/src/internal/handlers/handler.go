@@ -74,7 +74,11 @@ func (h *GlobalHandler) GetTodos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	SuccessJSON(w, r, todos)
+	res := HandlerResponse{
+		Status: "Success",
+		Data:   todos,
+	}
+	SuccessJSON(w, r, res)
 }
 
 func (h *GlobalHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
