@@ -13,7 +13,7 @@ import (
 func NewRouter(cfg *config.Config, pg *pgxpool.Pool, logger *slog.Logger) *chi.Mux {
 	r := chi.NewRouter()
 
-	globalHandler := handlers.NewGlobalHandler(cfg.MESSAGE, pg, logger)
+	globalHandler := handlers.NewGlobalHandler(cfg, pg, logger)
 
 	r.Group(func(r chi.Router) {
 		// r.Use(middlewares.RequestLogger) own custon logger middleware

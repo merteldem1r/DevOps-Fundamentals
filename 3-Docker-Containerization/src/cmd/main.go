@@ -31,11 +31,11 @@ func main() {
 	}
 
 	// Context for initialization
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	// db connection
-	pg, err := database.NewPostgres(ctx, cfg, logger)
+	pg, err := database.ConnectPostgresWithRetry(ctx, cfg, logger, 5, 2*time.Second)
 	if err != nil {
 		slog.Error("Error while connecting database", "error", err)
 		os.Exit(1)

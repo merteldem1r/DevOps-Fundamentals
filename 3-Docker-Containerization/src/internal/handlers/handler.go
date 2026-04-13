@@ -7,13 +7,14 @@ import (
 	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
 	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/models"
 )
 
 type GlobalHandler struct {
-	message string
-	pool    *pgxpool.Pool
-	logger  *slog.Logger
+	cfg    *config.Config
+	pool   *pgxpool.Pool
+	logger *slog.Logger
 }
 
 type HandlerResponse struct {
@@ -21,15 +22,15 @@ type HandlerResponse struct {
 	Data   interface{} `json:"data"`
 }
 
-func NewGlobalHandler(msg string, pg *pgxpool.Pool, lg *slog.Logger) *GlobalHandler {
-	return &GlobalHandler{message: msg, pool: pg, logger: lg}
+func NewGlobalHandler(cfg *config.Config, pg *pgxpool.Pool, lg *slog.Logger) *GlobalHandler {
+	return &GlobalHandler{cfg: cfg, pool: pg, logger: lg}
 }
 
 // global
 func (h *GlobalHandler) Get(w http.ResponseWriter, r *http.Request) {
 	res := HandlerResponse{
 		Status: "Success",
-		Data:   h.message,
+		Data:   h.cfg.Message,
 	}
 	SuccessJSON(w, r, res)
 }

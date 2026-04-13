@@ -5,10 +5,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
 )
 
 func TestGlobalHandler_GetHealth(t *testing.T) {
-	h := NewGlobalHandler("<3", nil, nil)
+	h := NewGlobalHandler(&config.Config{Message: "<3"}, nil, nil)
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/health", nil)
 	rr := httptest.NewRecorder()
@@ -38,7 +40,7 @@ func TestGlobalHandler_GetHealth(t *testing.T) {
 }
 
 func TestGlobalHandler_Get(t *testing.T) {
-	h := NewGlobalHandler("<3", nil, nil)
+	h := NewGlobalHandler(&config.Config{Message: "<3"}, nil, nil)
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/", nil)
 	rr := httptest.NewRecorder()
