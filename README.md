@@ -94,7 +94,6 @@ Main concepts practiced in this project:
 |       |-- database/
 |       |   |-- migrate.go           # migration runner
 |       |   |-- postgres.go          # PostgreSQL connection + retry logic
-|       |
 |       |-- handlers/
 |       |   |-- handler.go           # HTTP handlers
 |       |   |-- response.go          # JSON response helpers
