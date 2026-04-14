@@ -72,6 +72,7 @@ Main concepts practiced in this project:
 - Writing a multi-stage Dockerfile for a Go application
 - Building a small and production-like final image using a distroless runtime
 - Running multiple services with Docker Compose
+- Using `dockerignore` configuration for excluding files/folders from the build context
 - Connecting an API container to a PostgreSQL container
 - Managing environment variables with `.env`
 - Applying SQL migrations automatically on application startup
