@@ -3,7 +3,7 @@ package utils
 import (
 	"fmt"
 
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/internal/config"
 )
 
 func BuildPostgresDSN(cfg *config.Config) string {

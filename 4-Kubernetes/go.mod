@@ -1,4 +1,4 @@
-module github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization
+module github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes
 
 go 1.25.0
 

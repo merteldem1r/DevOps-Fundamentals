@@ -8,8 +8,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/utils"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/internal/config"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/internal/utils"
 )
 
 func NewPostgres(ctx context.Context, cfg *config.Config) (*pgxpool.Pool, error) {

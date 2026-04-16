@@ -7,8 +7,8 @@ import (
 
 	"github.com/lmittmann/tint"
 
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/routes"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/internal/config"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/internal/routes"
 )
 
 func main() {

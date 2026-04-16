@@ -8,9 +8,9 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/pgx/v5"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/utils"
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/migrations"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/internal/config"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/internal/utils"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/migrations"
 )
 
 func RunMigrations(cfg *config.Config, logger *slog.Logger) error {

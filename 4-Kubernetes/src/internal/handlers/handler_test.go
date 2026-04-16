@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/merteldem1r/DevOps-Fundamentals/3-Docker-Containerization/src/internal/config"
+	"github.com/merteldem1r/DevOps-Fundamentals/4-Kubernetes/src/internal/config"
 )
 
 func TestGlobalHandler_GetHealth(t *testing.T) {
