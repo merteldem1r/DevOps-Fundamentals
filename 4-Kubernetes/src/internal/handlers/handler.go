@@ -26,6 +26,20 @@ func NewGlobalHandler(cfg *config.Config, pg *pgxpool.Pool, lg *slog.Logger) *Gl
 	return &GlobalHandler{cfg: cfg, pool: pg, logger: lg}
 }
 
+// k8s health check
+func (h *GlobalHandler) GetHealthZ(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("ok"))
+}
+
+// k8s readiness check
+func (h *GlobalHandler) GetReadyZ(w http.ResponseWriter, r *http.Request) {
+	// TODO: add real readiness checks (e.g. db connection, external service availability)
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("ready"))
+}
+
 // global
 func (h *GlobalHandler) Get(w http.ResponseWriter, r *http.Request) {
 	res := HandlerResponse{

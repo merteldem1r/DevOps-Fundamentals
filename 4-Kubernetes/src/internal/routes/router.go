@@ -26,6 +26,10 @@ func NewRouter(cfg *config.Config, pg *pgxpool.Pool, logger *slog.Logger) *chi.M
 			r.Get("/health", globalHandler.GetHealth)
 			// r.Get("/todos", globalHandler.GetTodos)
 			// r.Post("/todos", globalHandler.CreateTodo)
+
+			// k8s health and readiness endpoints
+			r.Get("/healthz", globalHandler.GetHealthZ)
+			r.Get("/readyz", globalHandler.GetReadyZ)
 		})
 	})
 
